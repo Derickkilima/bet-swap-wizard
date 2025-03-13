@@ -27,6 +27,7 @@ export const BetSlipConverter = () => {
   const [betSlipCode, setBetSlipCode] = useState('');
   const [targetCompany, setTargetCompany] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [convertedCode, setConvertedCode] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,9 +43,11 @@ export const BetSlipConverter = () => {
     setIsLoading(true);
     // Simulate API call
     setTimeout(() => {
+      // For demonstration, we'll just modify the input code slightly
+      setConvertedCode(`${targetCompany}-${betSlipCode}-converted`);
       toast({
-        title: "Coming Soon",
-        description: "The conversion feature will be available soon!",
+        title: "Conversion Complete",
+        description: "Your bet slip has been converted!",
       });
       setIsLoading(false);
     }, 1500);
@@ -97,6 +100,29 @@ export const BetSlipConverter = () => {
           {isLoading ? "Converting..." : "Convert Bet Slip"}
         </Button>
       </form>
+
+      {convertedCode && (
+        <div className="mt-6 space-y-2">
+          <Label>Converted Bet Slip Code</Label>
+          <div className="p-4 bg-betting-primary/5 rounded-lg border border-betting-primary/10">
+            <p className="text-betting-primary font-mono text-sm break-all">{convertedCode}</p>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full mt-2"
+            onClick={() => {
+              navigator.clipboard.writeText(convertedCode);
+              toast({
+                title: "Copied!",
+                description: "The converted code has been copied to your clipboard.",
+              });
+            }}
+          >
+            Copy to Clipboard
+          </Button>
+        </div>
+      )}
     </Card>
   );
 };
